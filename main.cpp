@@ -65,6 +65,14 @@ int main()
 	int32_t directionY = -1;
 	while(true)
 	{
+		// get the terminal size at every iteration so we can deal with changing windows size
+		ioctl(0, TIOCGWINSZ, &termsize);
+	
+		XMax = termsize.ws_col;
+		YMax = termsize.ws_row;
+		maxX = XMax - 1;
+		maxY = YMax - 2;
+		
 		// This only works on 32 bit numbers which have their most significant bit copied upon >> rather than moved, thus int32_t (because of >>= 31)
 		// handle maximum X
 		// Yes, this could be done in one assignment like the others, but I like to write comments.
