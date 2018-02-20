@@ -1,28 +1,56 @@
 #include <iostream>
-#include <vector>
+#include <math.h>
 
-using std::cout;
+using namespace std;
 
-int main()
+void kiir(double tomb[], int db)
 {
-	double matrix[4][4];
-	std::vector<bool> linkek = std::vector<bool>[4];
-	for(int i = 0; i < 4; ++ i)
+	for(int i = 0; i<db; i++)
+		cout << tomb[i] << endl;
+}
+
+double tavolsag(double PR[], double PRv[], int n)
+{
+	double osszeg = 0.0;
+	for(int i = 0; i<n; ++i)
+		osszeg += (PRv[i] - PR[i]) * (PRv[i] - PR[i]);
+
+	return sqrt(osszeg);
+}
+
+int main(void)
+{
+	double L[4][4] =
 	{
-		
+		{ 0.0,	0.0, 		1.0 / 3.0, 	0.0 },
+		{ 1.0, 	1.0 / 2.0, 	1.0 / 3.0, 	1.0 },
+		{ 0.0, 	1.0 / 2.0, 	0.0, 		0.0 },
+		{ 0.0, 	0.0, 		1.0 / 3.0, 	0.0 }
+	};
+
+	double PR[4]	= { 0.0, 0.0, 0.0, 0.0 };
+	double PRv[4]	= { 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0 };
+
+	int i;
+	int j;
+
+	for(;;)
+	{
+		for (i = 0; i<4; ++i)
+		{
+			PR[i] = 0.0;
+			for (j = 0; j<4; ++j)
+			{
+				PR[i] += (L[i][j] * PRv[j]);
+			}
+		}
+		if (tavolsag(PR, PRv, 4) < 0.0000000001)
+			break;
+		for (i = 0; i<4; ++i)
+			PRv[i] = PR[i];
 	}
 	
-	// [0]: M
-	// [1]: J
-	// [2]: JP
-	// [3]: JPL
-	linkek[0].push_back(2); // az M hivatkozik a JP-re
-	linkek[1].push_back(2); // a J hivatkozik a JP-re
-	linkek[2].push_back(2); // a JP magára hivatkozik
-	linkek[2].push_back(3); // a JP a JPL-re is hivatkozik
-	linkek[3].push_back(0); // a JPL mindenre hivatkozik
-	linkek[3].push_back(1);
-	linkek[3].push_back(2);
+	kiir(PR, 4);
 
-	
+	return 0;
 }
